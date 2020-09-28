@@ -18,6 +18,7 @@ public class Customer {
     public boolean openAccount(long accountId) {
         if (account == null) {
             Account account = new Account(accountId);
+            this.account = account;
             return true;
         }
         System.out.println("Customer " + fullName() + " already has the active account");
