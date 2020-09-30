@@ -1,5 +1,3 @@
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -8,8 +6,13 @@ import java.util.HashMap;
  * Manages all transactions within the application
  */
 public class TransactionManager {
-    private long transactionNextId = 1;
+    private long transactionNextId;
     private HashMap<Account, ArrayList<Transaction>> transactions;
+
+    public TransactionManager(){
+        this.transactionNextId = 1;
+        this.transactions = new HashMap<>();
+    }
 
     /**
      * Creates and stores transactions

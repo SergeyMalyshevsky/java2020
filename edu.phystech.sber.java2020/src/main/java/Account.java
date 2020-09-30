@@ -25,6 +25,8 @@ public class Account {
         LocalDateTime currentTime = LocalDateTime.now();
         if (amount > 0 && (balanceOn(currentTime.toLocalDate()) - amount) > 0) {
             Transaction transaction = transactionManager.createTransaction(amount, this, beneficiary);
+            entries.addEntry(new Entry(beneficiary, transaction, -1 * amount, LocalDateTime.now()));
+            entries.addEntry(new Entry(this, transaction, amount, LocalDateTime.now()));
             transactionManager.executeTransaction(transaction);
             return true;
         }
@@ -66,6 +68,7 @@ public class Account {
     public boolean add(double amount) {
         if (amount > 0) {
             Transaction transaction = transactionManager.createTransaction(amount, null, this);
+            entries.addEntry(new Entry(null, transaction, amount, LocalDateTime.now()));
             transactionManager.executeTransaction(transaction);
             return true;
         }
@@ -85,7 +88,9 @@ public class Account {
         double balance = 0.;
         LocalDate unixEpoch = LocalDate.EPOCH;
         for (Entry entry : entries.betweenDates(unixEpoch, date)) {
-            balance += entry.amount;
+            if (entry.transaction.isExecuted() && !entry.transaction.isRolledBack()) {
+                balance += entry.amount;
+            }
         }
         return balance;
     }
@@ -98,9 +103,5 @@ public class Account {
         Entry lastEntry = entries.last();
         Transaction transaction = lastEntry.transaction;
         transactionManager.rollbackTransaction(transaction);
-    }
-
-    void addEntry(Entry entry) {
-        entries.addEntry(entry);
     }
 }

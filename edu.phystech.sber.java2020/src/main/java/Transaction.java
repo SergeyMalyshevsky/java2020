@@ -25,8 +25,6 @@ public class Transaction {
         if (executed) {
             throw new IllegalStateException("transaction is already executed");
         }
-        originator.addEntry(new Entry(beneficiary, this, amount, LocalDateTime.now()));
-        beneficiary.addEntry(new Entry(originator, this, -1 * amount, LocalDateTime.now()));
         executed = true;
         return this;
     }
@@ -39,8 +37,6 @@ public class Transaction {
         if (rolledBack) {
             throw new IllegalStateException("transaction is already rolled back");
         }
-        originator.addEntry(new Entry(beneficiary, this, -1 * amount, LocalDateTime.now()));
-        beneficiary.addEntry(new Entry(originator, this, amount, LocalDateTime.now()));
         rolledBack = true;
         return this;
     }
@@ -51,6 +47,20 @@ public class Transaction {
 
     public Double getAmount() {
         return amount;
+    }
+
+    public boolean isExecuted() {
+        if (executed) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isRolledBack() {
+        if (rolledBack) {
+            return true;
+        }
+        return false;
     }
 }
 

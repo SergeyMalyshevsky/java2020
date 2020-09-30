@@ -8,6 +8,10 @@ import java.util.Collection;
 public class Entries {
     private ArrayList<Entry> entries;
 
+    public Entries() {
+        this.entries = new ArrayList<>();
+    }
+
     void addEntry(Entry entry) {
         entries.add(entry);
     }
