@@ -37,6 +37,7 @@ public class Transaction {
         if (rolledBack) {
             throw new IllegalStateException("transaction is already rolled back");
         }
+        executed = false;
         rolledBack = true;
         return this;
     }

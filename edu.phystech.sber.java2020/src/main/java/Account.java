@@ -22,11 +22,13 @@ public class Account {
      * otherwise returns false
      */
     public boolean withdraw(double amount, Account beneficiary) {
-        LocalDateTime currentTime = LocalDateTime.now();
+        LocalDateTime currentTime = LocalDateTime.now().plusDays(1);
         if (amount > 0 && (balanceOn(currentTime.toLocalDate()) - amount) > 0) {
             Transaction transaction = transactionManager.createTransaction(amount, this, beneficiary);
             entries.addEntry(new Entry(beneficiary, transaction, -1 * amount, LocalDateTime.now()));
-            entries.addEntry(new Entry(this, transaction, amount, LocalDateTime.now()));
+            if (beneficiary != null) {
+                beneficiary.add(amount, beneficiary);
+            }
             transactionManager.executeTransaction(transaction);
             return true;
         }
@@ -54,7 +56,7 @@ public class Account {
      * otherwise returns false
      */
     public boolean addCash(double amount) {
-        return add(amount);
+        return add(amount, null);
     }
 
     /**
@@ -65,10 +67,10 @@ public class Account {
      * if amount &gt 0,
      * otherwise returns false
      */
-    public boolean add(double amount) {
+    public boolean add(double amount, Account originator) {
         if (amount > 0) {
             Transaction transaction = transactionManager.createTransaction(amount, null, this);
-            entries.addEntry(new Entry(null, transaction, amount, LocalDateTime.now()));
+            entries.addEntry(new Entry(originator, transaction, amount, LocalDateTime.now()));
             transactionManager.executeTransaction(transaction);
             return true;
         }
