@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Collection of entries for the account. Use it to save and get history of payments
+ * Collection of entries for the debitCard. Use it to save and get history of payments
  */
 public class Entries {
     private ArrayList<Entry> entries;

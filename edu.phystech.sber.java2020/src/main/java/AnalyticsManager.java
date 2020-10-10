@@ -7,21 +7,21 @@ public class AnalyticsManager {
         this.transactionManager = transactionManager;
     }
 
-    public Account mostFrequentBeneficiaryOfAccount(Account account) {
-        Account mostFrequentBeneficiary = null;
+    public DebitCard mostFrequentBeneficiaryOfAccount(DebitCard debitCard) {
+        DebitCard mostFrequentBeneficiary = null;
         int mostFrequentBeneficiaryCount = 0;
 
-        HashMap<Account, Integer> beneficiaryFrequency = new HashMap<>();
-        Collection<Transaction> transactionsByAccount = transactionManager.findAllTransactionsByAccount(account);
+        HashMap<DebitCard, Integer> beneficiaryFrequency = new HashMap<>();
+        Collection<Transaction> transactionsByAccount = transactionManager.findAllTransactionsByAccount(debitCard);
         for (Transaction transaction : transactionsByAccount) {
             if (!beneficiaryFrequency.containsKey(transaction.getBeneficiary())) {
-                beneficiaryFrequency.put(account, 1);
+                beneficiaryFrequency.put(debitCard, 1);
             } else {
-                Integer count = beneficiaryFrequency.get(account);
+                Integer count = beneficiaryFrequency.get(debitCard);
                 count++;
-                beneficiaryFrequency.put(account, count);
+                beneficiaryFrequency.put(debitCard, count);
                 if (count > mostFrequentBeneficiaryCount) {
-                    mostFrequentBeneficiary = account;
+                    mostFrequentBeneficiary = debitCard;
                     mostFrequentBeneficiaryCount = count;
                 }
             }
@@ -30,11 +30,24 @@ public class AnalyticsManager {
         return mostFrequentBeneficiary;
     }
 
-    public Collection<Transaction> topTenExpensivePurchases(Account account) {
-        Collection<Transaction> transactionsByAccount = transactionManager.findAllTransactionsByAccount(account);
+    public Collection<Transaction> topTenExpensivePurchases(DebitCard debitCard) {
+        Collection<Transaction> transactionsByAccount = transactionManager.findAllTransactionsByAccount(debitCard);
         ArrayList<Transaction> transactionsByAccountList = new ArrayList<>(transactionsByAccount);
         transactionsByAccountList.sort((t1, t2) -> t1.getAmount().compareTo(t2.getAmount()));
         ArrayList<Transaction> topTen = new ArrayList<>(transactionsByAccountList.subList(0, 9));
         return topTen;
     }
+
+    public double overallBalanceOfAccounts(List<Account> accounts) {
+        return 0d;
+    }
+
+    public Set uniqueKeysOf(List accounts, KeyExtractor extractor) {
+        return null;
+    }
+
+    public List accountsRangeFrom(List accounts, Account minAccount, Comparator comparator) {
+        return null;
+    }
+
 }

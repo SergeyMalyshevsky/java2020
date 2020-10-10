@@ -1,15 +1,13 @@
-import java.time.LocalDateTime;
-
 public class Transaction {
     private final long id;
     private final double amount;
-    private final Account originator;
-    private final Account beneficiary;
+    private final DebitCard originator;
+    private final DebitCard beneficiary;
     private boolean executed;
     private boolean rolledBack;
 
 
-    public Transaction(long id, double amount, Account originator, Account beneficiary) {
+    public Transaction(long id, double amount, DebitCard originator, DebitCard beneficiary) {
         this.id = id;
         this.amount = amount;
         this.originator = originator;
@@ -42,7 +40,7 @@ public class Transaction {
         return this;
     }
 
-    public Account getBeneficiary() {
+    public DebitCard getBeneficiary() {
         return beneficiary;
     }
 

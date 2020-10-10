@@ -11,24 +11,24 @@ class AccountTest {
     @Test
     void addCash() {
         TransactionManager transactionManager = new TransactionManager();
-        Account account = new Account(1, transactionManager);
+        DebitCard debitCard = new DebitCard(1, transactionManager);
 
-        assertTrue(account.add(1000, null));
-        account.rollbackLastTransaction();
-        assertFalse(account.add(-1000, null));
+        assertTrue(debitCard.add(1000, null));
+        debitCard.rollbackLastTransaction();
+        assertFalse(debitCard.add(-1000, null));
     }
 
     @Test
     void add() {
         TransactionManager transactionManager = new TransactionManager();
-        Account account = new Account(1, transactionManager);
+        DebitCard debitCard = new DebitCard(1, transactionManager);
 
         LocalDate tomorrow = LocalDate.now().plusDays(1);
 
-        account.add(1000, null);
-        account.add(2000, null);
-        account.add(3500, null);
-        assertEquals(6500, account.balanceOn(tomorrow));
+        debitCard.add(1000, null);
+        debitCard.add(2000, null);
+        debitCard.add(3500, null);
+        assertEquals(6500, debitCard.balanceOn(tomorrow));
     }
 
     @Test
@@ -38,28 +38,28 @@ class AccountTest {
     @Test
     void balanceOn() {
         TransactionManager transactionManager = new TransactionManager();
-        Account account = new Account(1, transactionManager);
+        DebitCard debitCard = new DebitCard(1, transactionManager);
 
         LocalDate tomorrow = LocalDate.now().plusDays(1);
-        assertEquals(0, account.balanceOn(tomorrow));
+        assertEquals(0, debitCard.balanceOn(tomorrow));
 
-        account.addCash(1000);
-        assertEquals(1000, account.balanceOn(tomorrow));
+        debitCard.addCash(1000);
+        assertEquals(1000, debitCard.balanceOn(tomorrow));
 
-        account.rollbackLastTransaction();
-        assertEquals(0, account.balanceOn(tomorrow));
+        debitCard.rollbackLastTransaction();
+        assertEquals(0, debitCard.balanceOn(tomorrow));
     }
 
     @Test
     void rollbackLastTransaction() {
         TransactionManager transactionManager = new TransactionManager();
-        Account account = new Account(1, transactionManager);
+        DebitCard debitCard = new DebitCard(1, transactionManager);
 
         LocalDate tomorrow = LocalDate.now().plusDays(1);
 
-        account.add(1000, null);
-        account.rollbackLastTransaction();
-        assertEquals(0, account.balanceOn(tomorrow));
+        debitCard.add(1000, null);
+        debitCard.rollbackLastTransaction();
+        assertEquals(0, debitCard.balanceOn(tomorrow));
     }
 
     @Test
@@ -67,30 +67,30 @@ class AccountTest {
         LocalDate tomorrow = LocalDate.now().plusDays(1);
 
         TransactionManager transactionManager = new TransactionManager();
-        Account account1 = new Account(1, transactionManager);
-        Account account2 = new Account(2, transactionManager);
+        DebitCard debitCard1 = new DebitCard(1, transactionManager);
+        DebitCard debitCard2 = new DebitCard(2, transactionManager);
 
-        account1.addCash(1000);
-        account2.addCash(2000);
+        debitCard1.addCash(1000);
+        debitCard2.addCash(2000);
 
-        assertTrue(account1.withdraw(500, account2));
-        assertEquals(500, account1.balanceOn(tomorrow));
-        assertEquals(2500, account2.balanceOn(tomorrow));
+        assertTrue(debitCard1.withdraw(500, debitCard2));
+        assertEquals(500, debitCard1.balanceOn(tomorrow));
+        assertEquals(2500, debitCard2.balanceOn(tomorrow));
     }
 
     @Test
     void testWithdrawCash() {
         TransactionManager transactionManager = new TransactionManager();
-        Account account = new Account(1, transactionManager);
+        DebitCard debitCard = new DebitCard(1, transactionManager);
 
         LocalDate tomorrow = LocalDate.now().plusDays(1);
 
-        assertFalse(account.withdrawCash(1000));
+        assertFalse(debitCard.withdrawCash(1000));
 
-        account.addCash(1000);
+        debitCard.addCash(1000);
 
-        assertTrue(account.withdrawCash(500));
-        assertEquals(500, account.balanceOn(tomorrow));
+        assertTrue(debitCard.withdrawCash(500));
+        assertEquals(500, debitCard.balanceOn(tomorrow));
     }
 
     @Test
