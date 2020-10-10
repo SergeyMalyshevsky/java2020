@@ -1,17 +1,17 @@
 import java.time.LocalDateTime;
 
 /**
- * The record of allocating the amount to the account
+ * The record of allocating the amount to the debitCard
  * Amount can be either positive or negative depending on originator or beneficiary
  */
 public class Entry {
-    final Account account;
+    final DebitCard debitCard;
     final Transaction transaction;
     final double amount;
     final LocalDateTime time;
 
-    public Entry(Account account, Transaction transaction, double amount, LocalDateTime time) {
-        this.account = account;
+    public Entry(DebitCard debitCard, Transaction transaction, double amount, LocalDateTime time) {
+        this.debitCard = debitCard;
         this.transaction = transaction;
         this.amount = amount;
         this.time = time;

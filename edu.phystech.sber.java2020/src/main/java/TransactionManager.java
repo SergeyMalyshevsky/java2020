@@ -7,7 +7,7 @@ import java.util.HashMap;
  */
 public class TransactionManager {
     private long transactionNextId;
-    private HashMap<Account, ArrayList<Transaction>> transactions;
+    private HashMap<DebitCard, ArrayList<Transaction>> transactions;
 
     public TransactionManager(){
         this.transactionNextId = 1;
@@ -23,8 +23,8 @@ public class TransactionManager {
      * @return created Transaction
      */
     public Transaction createTransaction(double amount,
-                                         Account originator,
-                                         Account beneficiary) {
+                                         DebitCard originator,
+                                         DebitCard beneficiary) {
 
         Transaction transaction = new Transaction(transactionNextId, amount, originator, beneficiary);
 
@@ -38,8 +38,8 @@ public class TransactionManager {
         return transaction;
     }
 
-    public Collection<Transaction> findAllTransactionsByAccount(Account account) {
-        Collection<Transaction> transactionsByAccount = transactions.get(account);
+    public Collection<Transaction> findAllTransactionsByAccount(DebitCard debitCard) {
+        Collection<Transaction> transactionsByAccount = transactions.get(debitCard);
         return transactionsByAccount;
     }
 
