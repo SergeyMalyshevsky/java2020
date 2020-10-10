@@ -37,4 +37,17 @@ public class AnalyticsManager {
         ArrayList<Transaction> topTen = new ArrayList<>(transactionsByAccountList.subList(0, 9));
         return topTen;
     }
+
+    public double overallBalanceOfAccounts(List<Account> accounts) {
+        return 0d;
+    }
+
+    public Set uniqueKeysOf(List accounts, KeyExtractor extractor) {
+        return null;
+    }
+
+    public List accountsRangeFrom(List accounts, Account minAccount, Comparator comparator) {
+        return null;
+    }
+
 }
