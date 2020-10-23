@@ -16,4 +16,9 @@ public class Entry {
         this.amount = amount;
         this.time = time;
     }
+
+    public double getAmount() {
+        return this.amount;
+    }
+
 }

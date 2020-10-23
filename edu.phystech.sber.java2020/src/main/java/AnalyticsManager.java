@@ -1,4 +1,6 @@
+import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class AnalyticsManager {
     private final TransactionManager transactionManager;
@@ -33,9 +35,10 @@ public class AnalyticsManager {
     public Collection<Transaction> topTenExpensivePurchases(DebitCard debitCard) {
         Collection<Transaction> transactionsByAccount = transactionManager.findAllTransactionsByAccount(debitCard);
         ArrayList<Transaction> transactionsByAccountList = new ArrayList<>(transactionsByAccount);
-        transactionsByAccountList.sort((t1, t2) -> t1.getAmount().compareTo(t2.getAmount()));
-        ArrayList<Transaction> topTen = new ArrayList<>(transactionsByAccountList.subList(0, 9));
-        return topTen;
+        return transactionsByAccountList.stream()
+                .sorted(Comparator.comparing(Transaction::getAmount))
+                .limit(10)
+                .collect(Collectors.toList());
     }
 
     public double overallBalanceOfAccounts(List<Account> accounts) {
@@ -48,6 +51,15 @@ public class AnalyticsManager {
 
     public List accountsRangeFrom(List accounts, Account minAccount, Comparator comparator) {
         return null;
+    }
+
+    Optional<Entry> maxExpenseAmountEntryWithinInterval(List<Account> accounts, LocalDate from, LocalDate to) {
+        return accounts.stream()
+                .map(account -> (DebitCard) account)
+                .map(account -> account.history(from, to))
+                .flatMap(Collection::stream)
+                .filter(entry -> entry.getAmount() < 0)
+                .min(Comparator.comparing(Entry::getAmount));
     }
 
 }
